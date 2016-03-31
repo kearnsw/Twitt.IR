@@ -68,15 +68,11 @@ twitter_api = oauth_login()
 twitter_stream = twitter.TwitterStream(auth=twitter_api.auth)
 
 stream = twitter_stream.statuses.filter(track=query)
-f.write('[')
-count = 1
 
+f.write('[')
 for tweet in stream:
 
     json.dump(tweet, f, indent=1)
     f.write(',\n')
-    print(tweet['text'])
-    now = str(datetime.datetime.now()).split(".")[0]
     save_to_mongo(tweet, 'Virus', "Zika")
-    count += 1
 f.close()
