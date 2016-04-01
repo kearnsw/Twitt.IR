@@ -3,14 +3,11 @@
 
 import twitter
 import sys
-import datetime
 from pymongo import MongoClient
-import time
-import json
 import os
 
-def oauth_login():
 
+def oauth_login():
     CONSUMER_KEY = 'X3MaTI14NpMnTyga8410PGCTm'
     CONSUMER_SECRET = 'YTHtm5MW7f2bC4idyzvIYZKlNJLnbiPVOrwlaw20i0BYuRrskv'
     OAUTH_TOKEN = '55862161-fURfClfU2L8HPE04lG4BDHfk1ERr3pTSXeQIgQ9MM'
@@ -57,11 +54,12 @@ def load_from_mongo(mongo_db, mongo_db_coll, return_cursor=False,
     else:
         return [item for item in cursor]
 
+
 __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
 outputFile = "Zika.json"
 f = open(os.path.join(__location__, outputFile), 'w+')
 
-query = 'Zika, Ebola'  # Comma-separated list of search terms
+query = 'Zika'  # Comma-separated list of search terms
 print >> sys.stderr, 'Filtering the public timeline for track="%s"' % (query,)
 
 twitter_api = oauth_login()
@@ -69,10 +67,10 @@ twitter_stream = twitter.TwitterStream(auth=twitter_api.auth)
 
 stream = twitter_stream.statuses.filter(track=query)
 
-f.write('[')
+# f.write('[')
 for tweet in stream:
-
-    json.dump(tweet, f, indent=1)
-    f.write(',\n')
+    # json.dump(tweet, f, indent=1)
+    # f.write(',\n')
     save_to_mongo(tweet, 'Virus', "Zika")
+
 f.close()
