@@ -28,24 +28,22 @@ time = datetime.now().strftime('%Y-%m-%d')
 query = sys.argv[1]     # Search terms should be separated by commas
 outFile = sys.argv[2].split(".")
 outputFile = outFile[0] + time + "." + outFile[1]
-
 print time
 if len(sys.argv) >= 4:
     db = sys.argv[3]
 else:
     db = "Virus"
 
-data_location = os.getcwd() + "/data"
-f = open(os.path.join(data_location, outputFile), 'w+')
-
+# Query Twitter Streaming API
 print ("Searching Twitter stream for mentions of " + query + "...")
-print ("Streaming data into " + db + " database" + "...")
-
 twitter_api = oauth_login()
 twitter_stream = twitter.TwitterStream(auth=twitter_api.auth)
-
 stream = twitter_stream.statuses.filter(track=query)
 
+# Write to DB and file
+print ("Streaming data into " + db + " database" + "...")
+data_location = os.getcwd() + "/data"
+f = open(os.path.join(data_location, outputFile), 'w+')
 f.write('[')
 for tweet in stream:
     json.dump(tweet, f, indent=1)
