@@ -40,9 +40,14 @@ twitter_api = oauth_login()
 twitter_stream = twitter.TwitterStream(auth=twitter_api.auth)
 stream = twitter_stream.statuses.filter(track=query)
 
+# Checks whether the script was called from .sh or src
+if os.path.basename(os.getcwd()) == "src":
+    data_location = os.path.dirname(os.getcwd()) + "/data"
+else:
+    data_location = os.getcwd() + "/data"
+
 # Write to DB and file
 print ("Streaming data into " + db + " database" + "...")
-data_location = os.getcwd() + "/data"
 f = open(os.path.join(data_location, outputFile), 'w+')
 f.write('[')
 for tweet in stream:
