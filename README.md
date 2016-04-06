@@ -4,6 +4,8 @@ Firehose.py opens the connection with Twitter streaming API and saves tweets bot
 The program takes as input the query and output file (optional MongoDB storage default=Virus) for storage
 e.g. 
 `python Firehose.py "Zika" zika.json Virus`
+By default the start time of the stream is appended to the file name to reduce risk of data loss and for
+identification purposes.
 
 The shell script firehose.sh will run this script and restart the script even if there is an interruption
 in the connection with the Twitter API on any level, e.g.
