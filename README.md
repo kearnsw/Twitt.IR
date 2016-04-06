@@ -5,7 +5,7 @@ The program takes as input the query and output file (optional MongoDB storage d
 e.g. 
 `python Firehose.py "Zika" zika.json Virus`
 By default the start time of the stream is appended to the file name to reduce risk of data loss and for
-identification purposes.
+identification purposes. OAuth information required by twitter should be stored in config file.
 
 The shell script firehose.sh will run this script and restart the script even if there is an interruption
 in the connection with the Twitter API on any level, e.g.
@@ -15,3 +15,5 @@ Load.py takes two arguments the database and collection to be searched and retur
 is customizable through modifying the configuration file. The collection name should be the same as the query
 term out of the box.
 `python Load.py Virus Zika`
+
+

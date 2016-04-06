@@ -11,10 +11,10 @@ def oauth_login(directory):
     configuration = fc.read()
     configuration = configuration.split()
 
-    CONSUMER_KEY = configuration[2].replace("'", "")
-    CONSUMER_SECRET = configuration[5].replace("'", "")
-    OAUTH_TOKEN = configuration[8].replace("'", "")
-    OAUTH_TOKEN_SECRET = configuration[11].replace("'", "")
+    CONSUMER_KEY = configuration[2]
+    CONSUMER_SECRET = configuration[5]
+    OAUTH_TOKEN = configuration[8]
+    OAUTH_TOKEN_SECRET = configuration[11]
     auth = twitter.oauth.OAuth(OAUTH_TOKEN, OAUTH_TOKEN_SECRET,
                                CONSUMER_KEY, CONSUMER_SECRET)
     twitter_api = twitter.Twitter(auth=auth)
