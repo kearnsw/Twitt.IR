@@ -1,4 +1,4 @@
-# Twitter
+# Pymongo wrapper for Twitter API
 
 Firehose.py opens the connection with Twitter streaming API and saves tweets both to JSON and MongoDB.
 The program takes as input the query and output file (optional MongoDB storage default=Virus) for storage
