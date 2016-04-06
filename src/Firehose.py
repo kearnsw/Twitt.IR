@@ -2,6 +2,7 @@ import sys
 import os
 import twitter
 import json
+from datetime import datetime
 from pymongo import MongoClient
 
 
@@ -23,16 +24,19 @@ def save_to_mongo(data, database, collection):
     return coll.insert(data)
 
 # Define configuration based off input from terminal
+time = datetime.now().strftime('%Y-%m-%d')
 query = sys.argv[1]     # Search terms should be separated by commas
-outputFile = sys.argv[2]
+outFile = sys.argv[2].split(".")
+outputFile = outFile[0] + time + "." + outFile[1]
 
+print time
 if len(sys.argv) >= 4:
     db = sys.argv[3]
 else:
     db = "Virus"
 
-__location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
-f = open(os.path.join(__location__, outputFile), 'w+')
+data_location = os.getcwd() + "/data"
+f = open(os.path.join(data_location, outputFile), 'w+')
 
 print ("Searching Twitter stream for mentions of " + query + "...")
 print ("Streaming data into " + db + " database" + "...")
