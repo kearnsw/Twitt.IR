@@ -53,14 +53,20 @@ def load_from_mongo(mongo_db, mongo_db_coll, return_cursor=False,
     else:
         return [item for item in cursor]
 
-disease = sys.argv[1]
+# Define configuration based off input from terminal
+query = sys.argv[1]     # Search terms should be separated by commas
 outputFile = sys.argv[2]
+
+if len(sys.argv) >= 4:
+    db = sys.argv[3]
+else:
+    db = "Virus"
 
 __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
 f = open(os.path.join(__location__, outputFile), 'w+')
 
-query = disease  # Comma-separated list of search terms
-print >> sys.stderr, 'Filtering the public timeline for track="%s"' % (query,)
+print ("Searching Twitter stream for mentions of " + query + "...")
+print ("Streaming data into " + db + " database" + "...")
 
 twitter_api = oauth_login()
 twitter_stream = twitter.TwitterStream(auth=twitter_api.auth)
@@ -71,6 +77,6 @@ f.write('[')
 for tweet in stream:
     json.dump(tweet, f, indent=1)
     f.write(',\n')
-    save_to_mongo(tweet, 'Virus', disease)
+    save_to_mongo(tweet, db, query)
 
 f.close()
