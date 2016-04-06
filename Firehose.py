@@ -1,11 +1,10 @@
 # Much of this code is adopted from Matthew A. Russell book Mining the Social
 # Web, 2nd Edition
-
-import twitter
 import sys
-from pymongo import MongoClient
 import os
-
+import twitter
+import json
+from pymongo import MongoClient
 
 def oauth_login():
     CONSUMER_KEY = 'X3MaTI14NpMnTyga8410PGCTm'
@@ -54,12 +53,13 @@ def load_from_mongo(mongo_db, mongo_db_coll, return_cursor=False,
     else:
         return [item for item in cursor]
 
+disease = sys.argv[1]
+outputFile = sys.argv[2]
 
 __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
-outputFile = "Zika.json"
 f = open(os.path.join(__location__, outputFile), 'w+')
 
-query = 'Zika'  # Comma-separated list of search terms
+query = disease  # Comma-separated list of search terms
 print >> sys.stderr, 'Filtering the public timeline for track="%s"' % (query,)
 
 twitter_api = oauth_login()
@@ -67,10 +67,10 @@ twitter_stream = twitter.TwitterStream(auth=twitter_api.auth)
 
 stream = twitter_stream.statuses.filter(track=query)
 
-# f.write('[')
+f.write('[')
 for tweet in stream:
-    # json.dump(tweet, f, indent=1)
-    # f.write(',\n')
+    json.dump(tweet, f, indent=1)
+    f.write(',\n')
     save_to_mongo(tweet, 'Virus', "Zika")
 
 f.close()
