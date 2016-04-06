@@ -71,6 +71,6 @@ f.write('[')
 for tweet in stream:
     json.dump(tweet, f, indent=1)
     f.write(',\n')
-    save_to_mongo(tweet, 'Virus', "Zika")
+    save_to_mongo(tweet, 'Virus', disease)
 
 f.close()
