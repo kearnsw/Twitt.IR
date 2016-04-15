@@ -25,7 +25,7 @@ def save_to_mongo(data, database, collection):
     client = MongoClient()
     db = client[database]
     coll = db[collection]
-    return coll.insert(data)
+    return coll.insert_one(data)
 
 # Checks whether the script was called from .sh or src
 if os.path.basename(os.getcwd()) == "src":
@@ -36,8 +36,7 @@ else:
 # Define configuration based off input from terminal
 date = datetime.now().strftime('%Y-%m-%d')
 query = sys.argv[1]     # Search terms should be separated by commas
-outFile = sys.argv[2].split(".")
-outputFile = outFile[0] + date + "." + outFile[1]
+outputFile = sys.argv[2] + date + ".json"
 print date
 if len(sys.argv) >= 4:
     db = sys.argv[3]
@@ -52,7 +51,7 @@ twitter_stream = twitter.TwitterStream(auth=twitter_api.auth)
 stream = twitter_stream.statuses.filter(track=query)
 
 data_location = directory + "/data"
-
+f = open(data_location + "/" + outputFile, "w+")
 # Write to DB and file
 print ("Streaming data into " + db + " database" + "...")
 f.write('[')
