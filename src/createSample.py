@@ -80,13 +80,15 @@ for index in random_indices:
             "\t \t \t \t \t \n")
     # Extract URL
     tokens = corpus[index].split()
+    num_urls = 0
     for token in tokens:
-        if "http" in token:
+        if "http" in token and num_urls == 0:
             tokens.remove(token)
             if count > 0:
                 urls.write(", \n")
             # json.dump({str(document["_id"]): token}, urls)
             urls.write('"' + str(ids[index]) + '": "' + token + '"')
             count += 1
+            num_urls += 1
 
 urls.write("}")
