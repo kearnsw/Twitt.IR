@@ -68,13 +68,13 @@ fn = "sample_" + str(months[month]) + "_" + str(day) + ".tsv"
 f = open(directory + fn, "w+")
 urls = open(directory + "urls.json", "w+")
 
-# Create linked samples of URLs and tweets by Mongo id
+# Write samples of URLs and tweets linked by Mongo id
 count = 0
 print ("Creating a sample from the " + q.collection + " collection in the " + q.database +
        " database for the date " + q.date + "...")
+
 urls.write("{ ")
 f.write("ID\t TEXT\t HUMOR\t MISINFORMATION\t DOWNPLAY\t CONCERN\t GENERAL INFORMATION \n")
-
 for index in random_indices:
     f.write(str(ids[index]) + "\t" + corpus[index] +
             "\t \t \t \t \t \n")
@@ -90,5 +90,4 @@ for index in random_indices:
             urls.write('"' + str(ids[index]) + '": "' + token + '"')
             count += 1
             num_urls += 1
-
 urls.write("}")
