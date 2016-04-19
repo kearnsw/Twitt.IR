@@ -1,4 +1,4 @@
-# Information Retreival and Visualization Tool for Twitter API using MongoDB and D3
+# Information Retreival tool for Twitter API using MongoDB
 
 Contains Bash and Python scripts to insert Twitter queries into MongoDB/JSON files 
 
