@@ -4,6 +4,7 @@
 
 import requests
 import time
+import os
 import sys
 import json
 from datetime import datetime
@@ -37,9 +38,9 @@ class Response:
 
 
 class InstaparserRequest:
-    def __init__(self):
+    def __init__(self, api_key):
         self.API = 'https://www.instaparser.com/api/1/article'
-        self.API_KEY = '4ee6e7c824024933973e363aca049c54'
+        self.API_KEY = api_key
         self.URL = 'http://www.kearnsw.com'
         self.response = dict()
 
@@ -53,31 +54,43 @@ class InstaparserRequest:
     def get_request(self):
         return requests.get(self.API, self.get_parameters())
 
+directory = os.path.dirname(os.getcwd())
+fc = open(os.path.join(directory, "config"), 'r')
+configuration = fc.read()
+configuration = configuration.split()
+API_KEY = configuration[14]
+print API_KEY
+
 if len(sys.argv) >= 2:
     f_in = open(sys.argv[1], 'r')
 else:
-    f_in = open('urls.txt', 'r')
+    f_in = open(directory + '/data/urls.txt', 'r')
 
 if len(sys.argv) >= 3:
     f_out = open(sys.argv[2], 'w+')
 else:
     date = datetime.now().strftime('%m-%d-%H-%M')
-    fn = "parsed" + date + ".txt"
-    f_out = open(fn, 'w+')
+    filename = "parsed" + date + ".json"
+    f_out = open(filename, 'w+')
 
-f_out.write("{ ")
-request = InstaparserRequest()
+f_out.write("[ ")
+request = InstaparserRequest(API_KEY)
 count = 1
-for entry in f_in:
+
+urls = json.load(f_in)
+for _id, url in urls.items():
     print "Parsing url #" + str(count) + "..."
-    request.set_url(entry)
+    print _id
+    request.set_url(url)
     response = request.get_request()
+    print response.status_code
     if response.status_code == 200:
         if count != 1:
             f_out.write(", \n")
-        f_out.write("\"" + request.URL.rstrip() + "\": \"")
+        f_out.write("{\"" + str(_id) + "\": ")
         body = json.loads(response.text)
-        f_out.write(body["description"].encode("utf-8") + "\"")
+        json.dump(body, f_out, indent=1)
+        f_out.write("}")
     count += 1
     time.sleep(2)
-f_out.write("}")
+f_out.write("]")
