@@ -1,7 +1,9 @@
-# Information Retreival tool for Twitter API using MongoDB
+# Twitt.IR an Information Retreival tool for Twitter API using MongoDB and Instaparser API
 
-Contains Bash and Python scripts to insert Twitter queries into MongoDB/JSON files 
+Twitt.IR streams a subset of tweets into MongoDB. Twitt.IR provides functions for sampling from Mongo and 
+extracting contextual information from the tweets using Instaparser API. 
 
+#Firehose
 Firehose.py opens the connection with Twitter streaming API and saves tweets both to JSON and MongoDB.
 The program takes as input the query and output file (optional MongoDB storage default=Virus) for storage
 e.g. 
