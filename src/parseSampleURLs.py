@@ -63,7 +63,7 @@ API_KEY = configuration[14]
 if len(sys.argv) >= 2:
     f_in = open(sys.argv[1], 'r')
 else:
-    f_in = open(directory + '/data/urls.txt', 'r')
+    f_in = open(directory + '/data/urls.json', 'r')
 
 if len(sys.argv) >= 3:
     f_out = open(sys.argv[2], 'w+')
