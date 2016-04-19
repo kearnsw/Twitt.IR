@@ -1,4 +1,6 @@
-# Shell and Python scripts to insert Twitter queries into MongoDB/JSON files
+# Information Retreival and Visualization Tool for Twitter API using MongoDB and D3
+
+Contains Bash and Python scripts to insert Twitter queries into MongoDB/JSON files 
 
 Firehose.py opens the connection with Twitter streaming API and saves tweets both to JSON and MongoDB.
 The program takes as input the query and output file (optional MongoDB storage default=Virus) for storage
