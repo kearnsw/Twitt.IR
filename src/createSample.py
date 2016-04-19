@@ -23,7 +23,7 @@ class Request:
         if len(sys.argv) >= 5:
             self.num_of_docs = sys.argv[4]
         else:
-            self.num_of_docs = 2
+            self.num_of_docs = 100
 
         if len(sys.argv) >= 4:
             self.date = sys.argv[3]
@@ -53,41 +53,38 @@ coll = db[q.collection]
 # Set search criteria
 criteria = {"lang": "en", "created_at": {'$regex': q.date},
             "text": {"$not": re.compile("RT")}}
-cursor = coll.find(criteria, {"text": 1}).limit(3)
+cursor = coll.find(criteria, {"text": 1})
 
-sentences_seen = []
+# load tweet with id
 corpus = []
 ids = []
-count = 0
-url_count = 0
-# Write sample to file
-urls.write("{ ")
-print ("Creating a sample from the " + q.collection + " collection in the " + q.database + " database for the date " + q.date + "...")
-f.write("ID\t TEXT\t HUMOR\t MISINFORMATION\t DOWNPLAY\t CONCERN\t GENERAL INFORMATION \n")
 for document in cursor:
     text = ' '.join(document["text"].encode("utf-8").split())
-    tokens = text.split()
-
-    for token in tokens:
-        if "http" in token:
-            tokens.remove(token)
-            if url_count > 0:
-                urls.write(", \n")
-            # json.dump({str(document["_id"]): token}, urls)
-            urls.write('"' + str(document["_id"]) + '": "' + token + '"')
-            url_count += 1
-    parsed = " ".join(tokens)
-
-    if parsed not in sentences_seen:
-        sentences_seen.append(parsed)
-        count += 1
-        corpus.append(text)
-        ids.append(document["_id"])
-urls.write("}")
+    corpus.append(text)
+    ids.append(document["_id"])
 
 # create sample by bootstrap sampling
 random_indices = random.sample(range(0, len(corpus)), q.num_of_docs)
+
+# write URLs and create tsv file for training
+count = 0
+print ("Creating a sample from the " + q.collection + " collection in the " + q.database +
+       " database for the date " + q.date + "...")
+urls.write("{ ")
+f.write("ID\t TEXT\t HUMOR\t MISINFORMATION\t DOWNPLAY\t CONCERN\t GENERAL INFORMATION \n")
+
 for index in random_indices:
     f.write(str(ids[index]) + "\t" + corpus[index] +
             "\t \t \t \t \t \n")
+    # Extract URL
+    tokens = corpus[index].split()
+    for token in tokens:
+        if "http" in token:
+            tokens.remove(token)
+            if count > 0:
+                urls.write(", \n")
+            # json.dump({str(document["_id"]): token}, urls)
+            urls.write('"' + str(ids[index]) + '": "' + token + '"')
+            count += 1
 
+urls.write("}")
