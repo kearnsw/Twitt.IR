@@ -59,7 +59,6 @@ fc = open(os.path.join(directory, "config"), 'r')
 configuration = fc.read()
 configuration = configuration.split()
 API_KEY = configuration[14]
-print API_KEY
 
 if len(sys.argv) >= 2:
     f_in = open(sys.argv[1], 'r')
@@ -71,7 +70,7 @@ if len(sys.argv) >= 3:
 else:
     date = datetime.now().strftime('%m-%d-%H-%M')
     filename = "parsed" + date + ".json"
-    f_out = open(filename, 'w+')
+    f_out = open(directory + '/data/' + filename, 'w+')
 
 f_out.write("[ ")
 request = InstaparserRequest(API_KEY)
@@ -83,7 +82,6 @@ for _id, url in urls.items():
     print _id
     request.set_url(url)
     response = request.get_request()
-    print response.status_code
     if response.status_code == 200:
         if count != 1:
             f_out.write(", \n")

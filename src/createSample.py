@@ -30,6 +30,12 @@ class Request:
         else:
             self.date = "Mar 31"
 
+    def connect(self):
+        # Open connection to client
+        client = MongoClient()
+        db = client[self.database]
+        return db[self.collection]
+
 # Create request object to handle user input.
 q = Request()
 months = {"Jan": 1, "Feb": 2, "Mar": 3, "Apr": 4, "May": 5,
@@ -39,18 +45,8 @@ date = q.date.split()
 month = date[0]
 day = date[1]
 
-# Open file I/O streams
-directory = os.getcwd() + "/data/"
-fn = "sample_" + str(months[month]) + "_" + str(day) + ".tsv"
-f = open(directory + fn, "w+")
-urls = open(directory + "urls.txt", "w+")
-
-# Open connection to client
-client = MongoClient()
-db = client[q.database]
-coll = db[q.collection]
-
-# Set search criteria
+# connect to Mongo and search based on criteria
+coll = q.connect()
 criteria = {"lang": "en", "created_at": {'$regex': q.date},
             "text": {"$not": re.compile("RT")}}
 cursor = coll.find(criteria, {"text": 1})
@@ -66,7 +62,13 @@ for document in cursor:
 # create sample by bootstrap sampling
 random_indices = random.sample(range(0, len(corpus)), q.num_of_docs)
 
-# write URLs and create tsv file for training
+# Open file I/O streams
+directory = os.getcwd() + "/data/"
+fn = "sample_" + str(months[month]) + "_" + str(day) + ".tsv"
+f = open(directory + fn, "w+")
+urls = open(directory + "urls.json", "w+")
+
+# Create linked samples of URLs and tweets by Mongo id
 count = 0
 print ("Creating a sample from the " + q.collection + " collection in the " + q.database +
        " database for the date " + q.date + "...")
