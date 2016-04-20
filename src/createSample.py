@@ -63,10 +63,9 @@ for document in cursor:
 random_indices = random.sample(range(0, len(corpus)), q.num_of_docs)
 
 # Open file I/O streams
-directory = os.getcwd() + "/data/"
 fn = "sample_" + str(months[month]) + "_" + str(day) + ".tsv"
-f = open(directory + fn, "w+")
-urls = open(directory + "urls.json", "w+")
+f = open("../data/" + fn, "w+")
+urls = open("../data/urls.json", "w+")
 
 # Write samples of URLs and tweets linked by Mongo id
 count = 0

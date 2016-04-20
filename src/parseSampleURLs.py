@@ -54,8 +54,7 @@ class InstaparserRequest:
     def get_request(self):
         return requests.get(self.API, self.get_parameters())
 
-directory = os.path.dirname(os.getcwd())
-fc = open(os.path.join(directory, "config"), 'r')
+fc = open("../config", 'r')
 configuration = fc.read()
 configuration = configuration.split()
 API_KEY = configuration[14]
@@ -63,14 +62,14 @@ API_KEY = configuration[14]
 if len(sys.argv) >= 2:
     f_in = open(sys.argv[1], 'r')
 else:
-    f_in = open(directory + '/data/urls.json', 'r')
+    f_in = open("../data/urls.json", 'r')
 
 if len(sys.argv) >= 3:
     f_out = open(sys.argv[2], 'w+')
 else:
     date = datetime.now().strftime('%m-%d-%H-%M')
     filename = "parsed" + date + ".json"
-    f_out = open(directory + '/data/' + filename, 'w+')
+    f_out = open("../data/" + filename, 'w+')
 
 f_out.write("[ ")
 request = InstaparserRequest(API_KEY)
@@ -82,6 +81,7 @@ for _id, url in urls.items():
     print _id
     request.set_url(url)
     response = request.get_request()
+    print response.status_code
     if response.status_code == 200:
         if count != 1:
             f_out.write(", \n")
