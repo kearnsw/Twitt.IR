@@ -50,7 +50,7 @@ for document in corpus:
         print("Filtering tweet %d of %d" % (i, length))
 
 print("done in %0.3fs." % (time() - t0))
-
+unique_tweets.pop(0)
 corpus = unique_tweets
 # create sample by bootstrap sampling
 random_indices = random.sample(range(0, len(corpus)), q.num_of_docs)
