@@ -1,40 +1,10 @@
-from pymongo import MongoClient
-import sys
-import re
+from __future__ import print_function
 import os
+import re
 import random
-import json
-
-
-class Request:
-
-    def __init__(self):
-
-        if len(sys.argv) >= 2:
-            self.database = sys.argv[1]
-        else:
-            self.database = "Virus"
-
-        if len(sys.argv) >= 3:
-            self.collection = sys.argv[2]
-        else:
-            self.collection = "Zika"
-
-        if len(sys.argv) >= 5:
-            self.num_of_docs = sys.argv[4]
-        else:
-            self.num_of_docs = 100
-
-        if len(sys.argv) >= 4:
-            self.date = sys.argv[3]
-        else:
-            self.date = "Mar 31"
-
-    def connect(self):
-        # Open connection to client
-        client = MongoClient()
-        db = client[self.database]
-        return db[self.collection]
+from time import time
+from Filter import Filter
+from Request import Request
 
 # Create request object to handle user input.
 q = Request()
@@ -46,30 +16,54 @@ month = date[0]
 day = date[1]
 
 # connect to Mongo and search based on criteria
-coll = q.connect()
+q.connect()
 criteria = {"lang": "en", "created_at": {'$regex': q.date},
             "text": {"$not": re.compile("RT")}}
-cursor = coll.find(criteria, {"text": 1})
+cursor = q.search(criteria, {"text": 1})
 
 # load tweet with id
 corpus = []
 ids = []
+tweet_filter = Filter(25)
 for document in cursor:
     text = ' '.join(document["text"].encode("utf-8").split())
     corpus.append(text)
     ids.append(document["_id"])
 
+# filter repeated tweets
+t0 = time()
+i = 0
+status = -1
+unique_tweets = ["Dummy Tweet"]
+length = len(corpus)
+
+print("Filtering tweets may take a few minutes...")
+for document in corpus:
+    for tweet in unique_tweets:
+        status = tweet_filter.check_duplicates(document, tweet)
+        if status:
+            break
+    if not status:
+        unique_tweets.append(document)
+    i += 1
+    if i%100 == 0:
+        print("Filtering tweet %d of %d" % (i, length))
+
+print("done in %0.3fs." % (time() - t0))
+
+corpus = unique_tweets
 # create sample by bootstrap sampling
 random_indices = random.sample(range(0, len(corpus)), q.num_of_docs)
 
 # Open file I/O streams
+directory = os.getcwd()
 fn = "sample_" + str(months[month]) + "_" + str(day) + ".tsv"
-f = open("../data/" + fn, "w+")
-urls = open("../data/urls.json", "w+")
+f = open(directory + "/data/" + fn, "w+")
+urls = open(directory + "/data/urls.json", "w+")
 
 # Write samples of URLs and tweets linked by Mongo id
 count = 0
-print ("Creating a sample from the " + q.collection + " collection in the " + q.database +
+print ("Creating a sample from the collection in the " + q.database +
        " database for the date " + q.date + "...")
 
 urls.write("{ ")
