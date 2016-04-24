@@ -46,8 +46,8 @@ for document in corpus:
     if not status:
         unique_tweets.append(document)
     i += 1
-    if i%100 == 0:
-        print("Filtering tweet %d of %d" % (i, length))
+    if i > 3000:
+        break
 
 print("done in %0.3fs." % (time() - t0))
 unique_tweets.pop(0)
