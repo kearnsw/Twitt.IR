@@ -29,11 +29,11 @@ class Request:
     def connect(self):
         # Open connection to client
         client = MongoClient()
+        # client.admin.authenticate("kearnsw", "kearnsw")
         db = client[self.database]
         self.collection = db[self.collection]
 
     def search(self, query, *args):
-        print args[0]
         if args:
             return self.collection.find(query, args[0])
         else:
