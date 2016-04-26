@@ -7,16 +7,15 @@ months = ["Jan", "Feb", "Mar", "Apr", "May",
 
 q = Request()
 q.connect()
-count = -1
 directory = os.path.dirname(os.getcwd())
 f = open(directory + "/data/test.csv", "w+")
-while count != 0:
+for i in range(10):
     start_date = q.date
     # criteria = [{"$group": {"_id": "$created_at",
     #                        "count": {"$sum": 1}}}]
     criteria = {"created_at": {'$regex': start_date}}
     count = q.count(criteria)
-
+    print q.date + " " + str(count)
     f.write(start_date + ", " + str(count) + "\n")
 
     date = start_date.split()

@@ -6,6 +6,7 @@
 
 from __future__ import print_function
 import os
+import csv
 import sys
 import json
 from time import time
@@ -22,6 +23,18 @@ def print_top_words(model, feature_names, n_top_words):
         print(" ".join([feature_names[i]
                         for i in topic.argsort()[:-n_top_words - 1:-1]]))
     print()
+
+
+def read_sample(fn):
+    directory = os.path.dirname(os.getcwd()) + "/data/"
+    tweets = []
+    with open(directory + fn, 'rb') as f:
+        reader = csv.reader(f, delimiter='\t', quotechar="|")
+        for row in reader:
+            row = row[0:6]
+            tweets.append(row)
+    tweets.pop(0)
+    return tweets
 
 
 class TopicModel:
