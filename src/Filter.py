@@ -1,6 +1,7 @@
 import alignment
 import thread
 
+
 class Filter:
 
     def __init__(self, threshold):

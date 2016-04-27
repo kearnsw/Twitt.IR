@@ -1,6 +1,6 @@
 from pymongo import MongoClient
 import sys
-
+from config import MONGO_AUTHENTICATION, MONGO_PASSWORD, MONGO_USERNAME
 
 class Request:
 
@@ -29,7 +29,8 @@ class Request:
     def connect(self):
         # Open connection to client
         client = MongoClient()
-        # client.admin.authenticate("kearnsw", "kearnsw")
+        if MONGO_AUTHENTICATION:
+            client.admin.authenticate(MONGO_USERNAME, MONGO_PASSWORD)
         db = client[self.database]
         self.collection = db[self.collection]
 

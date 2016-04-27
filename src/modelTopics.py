@@ -1,8 +1,5 @@
-import os
-import csv
 from TopicModel import TopicModel
 from TopicModel import read_sample
-import nltk
 
 
 def print_top_words(model, feature_names, n_top_words):

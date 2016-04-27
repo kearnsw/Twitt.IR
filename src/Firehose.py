@@ -4,17 +4,11 @@ import twitter
 import json
 from datetime import datetime
 from pymongo import MongoClient
+from config import MONGO_AUTHENTICATION, MONGO_PASSWORD, MONGO_USERNAME
+from config import OAUTH_TOKEN, OAUTH_TOKEN_SECRET, CONSUMER_SECRET, CONSUMER_KEY
 
 
-def oauth_login(directory):
-    fc = open(os.path.join(directory, "config"), 'r')
-    configuration = fc.read()
-    configuration = configuration.split()
-
-    CONSUMER_KEY = configuration[2]
-    CONSUMER_SECRET = configuration[5]
-    OAUTH_TOKEN = configuration[8]
-    OAUTH_TOKEN_SECRET = configuration[11]
+def oauth_login():
     auth = twitter.oauth.OAuth(OAUTH_TOKEN, OAUTH_TOKEN_SECRET,
                                CONSUMER_KEY, CONSUMER_SECRET)
     twitter_api = twitter.Twitter(auth=auth)
@@ -23,6 +17,8 @@ def oauth_login(directory):
 
 def save_to_mongo(data, database, collection):
     client = MongoClient()
+    if MONGO_AUTHENTICATION:
+            client.admin.authenticate(MONGO_USERNAME, MONGO_PASSWORD)
     db = client[database]
     coll = db[collection]
     return coll.insert_one(data)
@@ -45,7 +41,7 @@ else:
 
 # Query Twitter Streaming API
 print ("Searching Twitter stream for mentions of " + query + "...")
-twitter_api = oauth_login(directory)
+twitter_api = oauth_login()
 
 twitter_stream = twitter.TwitterStream(auth=twitter_api.auth)
 stream = twitter_stream.statuses.filter(track=query)
@@ -59,5 +55,6 @@ for tweet in stream:
     json.dump(tweet, f, indent=1)
     f.write(',\n')
     save_to_mongo(tweet, db, query)
+    print tweet["text"]
 
 f.close()

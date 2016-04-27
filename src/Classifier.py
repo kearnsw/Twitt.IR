@@ -4,7 +4,6 @@ import nltk
 import random
 from TopicModel import read_sample
 
-
 def read_data():
     tweets = []
     directory = os.path.dirname(os.getcwd()) + "/data/train/"

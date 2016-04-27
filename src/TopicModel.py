@@ -7,11 +7,7 @@
 from __future__ import print_function
 import os
 import csv
-import sys
-import json
 from time import time
-import nltk
-import operator
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.decomposition import NMF, LatentDirichletAllocation
