@@ -1,6 +1,43 @@
+import os
+import sys
 import nltk
 import random
 from TopicModel import read_sample
+
+
+def read_data():
+    tweets = []
+    directory = os.path.dirname(os.getcwd()) + "/data/train/"
+    for f in os.listdir(directory):
+        tweets += read_sample("train/" + f)
+    return tweets
+
+
+def extract_features(tweets):
+    corpus = []
+    for tweet in tweets:
+        corpus.append(tweet[1])
+
+    vocab = [word for tweet in corpus for word in tweet.split()]
+
+    # collect unigram features
+    word_dist = nltk.FreqDist(w.lower() for w in vocab)
+    word_features = list(word_dist)[:2000]
+
+    # collect bigram features
+    finder = nltk.BigramCollocationFinder.from_words(vocab, window_size=3)
+    finder.apply_freq_filter(4)
+    bigram_features = []
+    for key, value in finder.ngram_fd.items():
+        bigram = " ".join(key)
+        bigram_features.append(bigram)
+
+    # collect features to be returned
+    features = dict()
+    features["word_features"] = word_features
+    features["bigram_features"] = bigram_features
+
+    return features
 
 
 def document_features(document):
@@ -14,13 +51,13 @@ def document_features(document):
 
 
 class Classifier:
-    def __init__(self, tweets):
+    def __init__(self, tweets, tag):
         self.documents = []
         self.tweets = tweets
-        self.tag = ""
-
-    def tag_sample(self, tag):
         self.tag = tag
+
+    def tag_sample(self):
+        tag = self.tag
         for tweet in self.tweets:
             if tweet[2] == "1" and tag == "humor":
                 self.documents.append((tweet[1].lower().split(), "humor"))
@@ -39,72 +76,81 @@ class Classifier:
     def train(self, training_set):
         return nltk.NaiveBayesClassifier.train(training_set)
 
-    def test(self, test_set, classifier):
-        print(nltk.classify.accuracy(classifier, test_set))
+    def test(self, document_set, classifier):
+        print(nltk.classify.accuracy(classifier, document_set))
         classifier.show_most_informative_features(10)
         count = 0
-        for item in test_set:
-            if classifier.classify(item[0]) == self.tag:
+        for document in document_set:
+            if classifier.classify(document[0]) == self.tag:
                 count += 1
         print ("Found " + str(count) + " tweets in the " + self.tag + " category.")
 
         return count
 
-    def run(self, tag):
-        self.tag_sample(tag)
+    def run(self, document):
+        self.tag_sample()
+        random.shuffle(self.documents)
         feature_set = self.features()
         train_set = feature_set[:int((.9 * len(feature_set)))]
-        test_set = feature_set[int((.9 * len(feature_set))):]
         classifier = self.train(train_set)
-        self.test(test_set, classifier)
 
-tweets = read_sample("sample_4_18_tram.tsv")
-tweets = tweets + read_sample("sample_4_04_tram.csv")
-tweets = tweets + read_sample("sample_4_06_tram.csv")
-tweets = tweets + read_sample("sample_4_08_tram.csv")
-tweets = tweets + read_sample("sample_4_10_tram.csv")
-tweets = tweets + read_sample("sample_4_12_tram.csv")
-tweets = tweets + read_sample("sample_4_19_tram.tsv")
-tweets = tweets + read_sample("sample_4_20_tram.tsv")
-tweets = tweets + read_sample("sample_4_21_tram.tsv")
+        if document is None:
+            test_set = feature_set[int((.9 * len(feature_set))):]
+            self.test(test_set, classifier)
 
-# tweets = [tweet for tweet_set in tweets for tweet in tweet_set]
-corpus = []
-dictionary = []
+        return classifier
 
-for tweet in tweets:
-    corpus.append(tweet[1])
-    random.shuffle(corpus)
+# Create and train the four classifiers
+tweets = read_data()
+features = extract_features(tweets)
+word_features = features["word_features"]
+bigram_features = features["bigram_features"]
 
-vocab = [word for tweet in corpus for word in tweet.split()]
+print ("Training humor classifier...")
+humor = Classifier(tweets, "humor")
+humor_classifier = humor.run(None)
 
-# create unigram features
-all_words = nltk.FreqDist(w.lower() for w in vocab)
-word_features = list(all_words)[:1000]
+print ("Training concern classifier...")
+concern = Classifier(tweets, "concern")
+concern_classifier = concern.run(None)
 
-# create bigram features
-finder = nltk.BigramCollocationFinder.from_words(vocab,
-                                                 window_size=3)
-finder.apply_freq_filter(4)
-bigram_features = []
-bigram_measures = nltk.collocations.BigramAssocMeasures
-for k, v in finder.ngram_fd.items():
-    bigram = " ".join(k)
-    bigram_features.append(bigram)
+print ("Training mistrust classifier...")
+mistrust = Classifier(tweets, "mistrust")
+mistrust_classifier = mistrust.run(None)
 
-print ("Classifying humor...")
-humor_classifier = Classifier(tweets)
-humor_classifier.run("humor")
+print ("Training relief classifier...")
+relief = Classifier(tweets, "relief")
+relief_classifier = relief.run(None)
 
-print ("Classifying mistrust...")
-mistrust_classifier = Classifier(tweets)
-mistrust_classifier.run("mistrust")
+# Run classifiers on a dataset
+print("Classifying twitter data...")
+fn = sys.argv[1]
+data = read_sample(fn)
+i = 2
 
-print ("Classifying relief...")
-relief_classifier = Classifier(tweets)
-relief_classifier.run("relief")
+for document in data:
+    tweet = document[1].lower().split()
+    features = document_features(tweet)
 
-print ("Classifying concern...")
-concern_classifier = Classifier(tweets)
-concern_classifier.run("concern")
+    concern_value = concern_classifier.classify(features)
+    mistrust_value = mistrust_classifier.classify(features)
+    relief_value = relief_classifier.classify(features)
+    humor_value = humor_classifier.classify(features)
+
+    if humor_value == "humor":
+        print humor_value + " " + str(i)
+
+    if mistrust_value == "mistrust":
+        print mistrust_value + " " + str(i)
+
+    if relief_value == "relief":
+        print relief_value + " " + str(i)
+
+    if concern_value == "concern":
+        print concern_value + " " + str(i)
+    i += 1
+
+
+
+
 
