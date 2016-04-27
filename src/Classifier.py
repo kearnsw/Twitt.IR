@@ -6,7 +6,10 @@ from TopicModel import read_sample
 
 def read_data():
     tweets = []
-    directory = os.path.dirname(os.getcwd()) + "/data/train/"
+    if os.path.basename(os.getcwd()) == "src":
+        directory = os.path.dirname(os.getcwd()) + "/data/train"
+    else:
+        directory = os.getcwd() + "/data/train"
     for f in os.listdir(directory):
         tweets += read_sample("train/" + f)
     return tweets

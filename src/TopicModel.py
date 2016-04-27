@@ -22,7 +22,10 @@ def print_top_words(model, feature_names, n_top_words):
 
 
 def read_sample(fn):
-    directory = os.path.dirname(os.getcwd()) + "/data/"
+    if os.path.basename(os.getcwd()) == "src":
+        directory = os.path.dirname(os.getcwd()) + "/data/"
+    else:
+        directory = os.getcwd() + "/data/"
     tweets = []
     with open(directory + fn, 'rb') as f:
         reader = csv.reader(f, delimiter='\t', quotechar="|")
