@@ -1,8 +1,0 @@
-CONSUMER_KEY = "replace"
-CONSUMER_SECRET = "replace"
-OAUTH_TOKEN = "replace"
-OAUTH_TOKEN_SECRET = "replace"
-INSTAPARSER_API_KEY = "4ee6e7c824024933973e363aca049c54"
-MONGO_AUTHENTICATION = 0
-MONGO_USERNAME = "replace with username"
-MONGO_PASSWORD = "replace with password"
