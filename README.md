@@ -6,13 +6,13 @@ This is an alpha release of Twitt.IR a package that queries the Twitter firehose
 Firehose.py opens the connection with Twitter streaming API and saves tweets both to JSON and MongoDB.
 The program takes as input the query and output file (optional MongoDB storage default=Virus) for storage
 e.g. 
-`python Firehose.py "collection_name" "output_file" "db_name"`
+`python Firehose.py "search_term" "output_file" "db_name"`
 By default the start time of the stream is appended to the file name to reduce risk of data loss and for
 identification purposes. OAuth information required by twitter should be stored in config file.
 
 The shell script firehose.sh will run this script and restart the script even if there is an interruption
 in the connection with the Twitter API on any level, e.g.
-`path/to/Twitt.IR/firehose.sh "collection_name" "output_file"`
+`path/to/Twitt.IR/firehose.sh "search_term" "output_file"`
 
 #Sample
 createSample.py is used to create samples for annotation and testing. Given a database and collection, this program returns a filtered collection of tweets from a given day which removes duplicates. 
