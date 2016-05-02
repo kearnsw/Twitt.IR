@@ -1,5 +1,6 @@
 from __future__ import print_function
 import os
+import sys
 import re
 import json
 from bson import ObjectId
@@ -37,6 +38,7 @@ f = open(directory + "/data/" + fn, "w+")
 corpus = [{"text": "dummy"}]
 tweetFilter = Filter(25)
 i = 0
+print("Filtering Results...")
 for document in cursor:
     document["_id"] = str(document["_id"])
     document["text"] = document["text"].replace('"', "'")
@@ -47,7 +49,7 @@ for document in cursor:
             break
     if not status:
         corpus.append(document)
-    i += 1
+        i += 1
     if i > 100:
         break
     print(i)
