@@ -4,6 +4,7 @@ import nltk
 import random
 from TopicModel import read_sample
 
+
 def read_data():
     tweets = []
     if os.path.basename(os.getcwd()) == "src":
@@ -38,7 +39,6 @@ def extract_features(tweets):
     features = dict()
     features["word_features"] = word_features
     features["bigram_features"] = bigram_features
-
     return features
 
 
@@ -128,29 +128,30 @@ relief_classifier = relief.run(None)
 print("Classifying twitter data...")
 fn = sys.argv[1]
 data = read_sample(fn)
-i = 2
 
 for document in data:
     tweet = document[1].lower().split()
     features = document_features(tweet)
 
     concern_value = concern_classifier.classify(features)
-    mistrust_value = mistrust_classifier.classify(features)
-    relief_value = relief_classifier.classify(features)
-    humor_value = humor_classifier.classify(features)
+    # mistrust_value = mistrust_classifier.classify(features)
+    # relief_value = relief_classifier.classify(features)
+    # humor_value = humor_classifier.classify(features)
+    if concern_value == "concern":
+        print concern_value
+        print document[1]
 
+"""
     if humor_value == "humor":
-        print humor_value + " " + str(i)
+        print humor_value
 
     if mistrust_value == "mistrust":
-        print mistrust_value + " " + str(i)
+        print mistrust_value
 
     if relief_value == "relief":
-        print relief_value + " " + str(i)
+        print relief_value
+"""
 
-    if concern_value == "concern":
-        print concern_value + " " + str(i)
-    i += 1
 
 
 

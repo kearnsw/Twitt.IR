@@ -2,7 +2,7 @@ import sys
 import path
 import os
 import json
-import httplib
+import wget
 
 directory = os.path.dirname(os.getcwd())
 fn = sys.argv[1]
@@ -18,5 +18,4 @@ for tweet in tweets:
                 query += location[i]
             else:
                 query += "+" + location[i]
-
         fo.write(query.encode("UTF-8") + "\n")

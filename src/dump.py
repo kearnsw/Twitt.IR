@@ -36,7 +36,7 @@ f = open(directory + "/data/" + fn, "w+")
 
 # load tweet with id
 corpus = [{"text": "dummy"}]
-tweetFilter = Filter(25)
+tweetFilter = Filter(45)
 i = 0
 print("Filtering Results...")
 for document in cursor:
@@ -50,11 +50,11 @@ for document in cursor:
     if not status:
         corpus.append(document)
         i += 1
-    if i > 100:
+    if i >= 100:
         break
     print(i)
 
 
 # Remove header
 corpus.pop(0)
-json.dump(corpus, f)
+json.dump(corpus, f, indent=1)

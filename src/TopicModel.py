@@ -1,4 +1,4 @@
-# Much of this code is taken from:
+# Part of this code is taken from:
 # Author: Olivier Grisel <olivier.grisel@ensta.org>
 #         Lars Buitinck <L.J.Buitinck@uva.nl>
 #         Chyi-Kwei Yau <chyikwei.yau@gmail.com>

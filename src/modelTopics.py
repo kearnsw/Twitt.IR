@@ -10,7 +10,7 @@ def print_top_words(model, feature_names, n_top_words):
 
 
 # Read in Data
-tweet_data = read_sample("sample_3_31.tsv")
+tweet_data = read_sample("sample_4_17.tsv")
 corpus = []
 for item in tweet_data:
     corpus.append(item[1])
@@ -19,9 +19,9 @@ model = TopicModel(corpus, 8, 5)
 tfidf = model.calculate_tfidf()
 model.calculate_nmf(tfidf)
 """
-tweets = read_sample("sample_4_04.tsv")
-tweets.append(read_sample("sample_4_06.tsv"))
-tweets.append(read_sample("sample_4_08.tsv"))
+tweets = read_sample("train/sample_4_20_tram.tsv")
+tweets.append(read_sample("train/sample_4_21_tram.tsv"))
+tweets.append(read_sample("train/sample_4_19_tram.tsv"))
 
 humor = []
 misinformation = []
