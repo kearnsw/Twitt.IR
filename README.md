@@ -25,5 +25,9 @@ For convenience this can be called from the top level directory:
 Classify.py trains four classifiers, i.e. Humor, Mistrust, Relief, and Concern from the data within the /data/train/ directory. The program then applies these classifiers to a given dataset in the /data/ directory.
 `path/to/Twitt.IR/classify.sh "data_to_be_classified"`
 
+#Visualization Interface
+The visual interface for contextualizing the data can be accessed at http://localhost:2112/ by running:
+`python path/to/Twitt.IR/src/server.py`
+
 
 
