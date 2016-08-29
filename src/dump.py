@@ -48,7 +48,7 @@ for document in cursor:
         if status:
             break
     if not status:
-        corpus.append(document)
+        corpus.append(document["text"])
         i += 1
     if i >= 100:
         break

@@ -1,0 +1,103 @@
+<div class="card" id="searchCard">
+<div class="row">
+	<form class="navbar-form navbar-right" role="search">
+		  <div class="form-group">
+			<input id="search" type="text" class="form-control" placeholder="Search Term..." autocomplete="off">
+		  </div>
+		  <button id="searchButton" type="submit" class="btn btn-default">
+			  <i class="glyphicon glyphicon-search"></i>
+		  </button>
+		</form>
+    </div>
+    </div>
+<div class="row">
+		<div class="col-lg-7">
+			<div class="card">
+	    		<div id="aggregate" class="aggregate"></div>
+				<div class="row">
+                    <div class="col-lg-6" id="tweets">
+
+                        <!-- Concern Key/Sample-->
+                        <div class="tweet">
+                         <svg width="100%" height="15px">
+                             <rect width="15" height="15" style="fill:#05b378;"></rect>
+                             <text x="30" y="15" fill="black" font-size="2.0rem">Concern/Fear</text>
+                        </svg>
+                            <p id="concernTweet">This is VERY SCARY!!! Zika is going to pretty much be everywhere</p>
+                        </div>
+
+                        <!-- Mistrust Key/Sample -->
+                        <div class="tweet">
+                             <svg width="100%" height="15px">
+                                 <rect width="15" height="15" style="fill:#f8b128;stroke-width:3"></rect>
+                                 <text x="30" y="15" fill="black" font-size="2.0rem";>Mistrust/Misinformation</text>
+                            </svg>
+                            <p id="mistrustTweet">CDC Admits Fabricating Link Between Zika Virus And Microcephaly</p>
+                        </div>
+
+
+                        <!-- Humor Key/Sample -->
+                        <div class="tweet">
+                             <svg width="100%" height="15px">
+                                 <rect width="15" height="15" style="fill:#4040e8;"></rect>
+                                 <text x="30" y="15" fill="black" font-size="2.0rem">Humor</text>
+                            </svg>
+                            <p id="humorTweet">@Rio2016_en @OlympicFlame maybe it double as a big Zika bug zapper </p>
+                        </div>
+
+                        <!-- Total Key/Value -->
+                        <div class="tweet">
+                            <svg width="100%" height="15px">
+                                 <rect width="15" height="15" style="fill:#db4437;"></rect>
+                                 <text x="30" y="15" fill="black" font-size="2.0rem">Total</text>
+                            </svg>
+                            <p id="totalTweets">23,189</p>
+                        </div>
+                        </div>
+                    <div class="col-lg-6">
+
+                        <!--Date Input -->
+                        <form name="myForm">
+                           <label for="datePicker">Choose a date:</label>
+                           <input type="date" id="datePicker" name="input" ng-model="dateValue"
+                               placeholder="yyyy-MM-dd" required />
+                            {{dateValue}}
+
+                        </form>
+
+
+
+                        <bar-chart concern="concernDeviation.value" mistrust="mistrustDeviation.value"  humor="humorDeviation.value"></bar-chart>
+                    </div>
+
+				</div>
+			</div>
+		</div>
+		<div class="col-lg-5">
+			<div class="card">
+				<div class="textbox">
+				<h3>News</h3>
+					<h4>CDC Reports First Zika Infection Between Gay Couple</h4>
+                    <p>NORTH TEXAS (CBSDFW.COM) – The Centers For Disease Control confirmed another sexually transmitted case of the Zika virus was discovered in Dallas.
+                        This time the virus was shared between two men. One man traveled to Venezuela, then came home and was intimate with his partner, according to the CDC.
+                        Health officials said it’s the first report of infection between a gay couple, and worry that Zika will spread even faster through sex — as well as through mosquito bites.
+</p>
+                    <h4>The Zika virus is worse than we thought</h4>
+                    <h6>www.miamiherald.com</h6>
+                    <p>With summertime mosquito season approaching, the Zika virus is beginning to get mighty scary.
+                        In recent years, we’ve had to deal with other insidious threats, including another mosquito-borne disease, the West Nile virus. But Zika is truly sinister. It’s most vulnerable targets are pregnant women and the fetuses they carry, which the virus attacks.
+                        On Wednesday, the U.S. Centers for Disease Control and Prevention confirmed Brazilian doctors’ initial suspicions...</p>
+
+                    <h4>Health Officials Split Over Advice on Pregnancy in Zika Areas</h4>
+                    <h6>www.nytimes.com</h6>
+                    <p> As the Zika virus bears down on the United States, federal health officials are divided over a politically and ethically charged question: Should they advise American women to delay pregnancy in areas where the virus is circulating?
+                        Some infectious disease experts are arguing that avoiding conception is the only sure way to prevent the births of deformed babies, according to outside researchers who serve on various advisory panels. </p>
+
+                    <h4>With Summer Coming, Can the Zika Virus Be Contained?</h4>
+                    <h6>www.newyorker.com</h6>
+                    <p>With no vaccine or antiviral treatment available so far, the only way to prevent an outbreak of the Zika virus is to fight its main carrier: the mosquito.
+                        Every month for the past three years, Casey Stevenson has gone to Holy Cross Cemetery, in Menlo Park, California, to look for mosquito larvae. With his khaki uniform and close-cropped hair, Stevenson—a vector-control specialist with San Mateo County—has the bearing of a military sergeant. The primary tools of his trade, though, are a turkey baster...</p>
+				</div>
+			</div>
+		</div>
+</div>

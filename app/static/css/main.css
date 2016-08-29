@@ -1,0 +1,142 @@
+body {
+    background: white; /* linear-gradient(90deg, #0fb8ad 0%, #1fc8db 51%, #2cb5e8 75%); */
+}
+
+.container {
+    width: 100%;
+}
+.card {
+    border:1px solid #ccc;
+    margin-bottom: 10px;
+    color: #102E5B;
+    padding-left: 10px;
+    width: 100%;
+    height: 800px;
+    background-color: whitesmoke;
+    box-shadow:0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
+}
+
+
+#searchCard {
+    height: 100%;
+    background-color: midnightblue;
+}
+
+#search {
+    margin-left: 10px;
+    background: white;
+    border-radius: 15px;
+    padding-left:15px;
+    width: 500px;
+    border: none;
+    outline: none;
+    box-shadow: none;
+}
+
+#searchButton {
+    border-top-right-radius: 50px;
+    border-bottom-right-radius: 50px;
+    margin-left: -15px;
+}
+
+#tweets {
+    padding-left: 100px;
+    padding-top: 50px;
+}
+
+.textbox {
+    height: 405px;
+    padding: 10px;
+}
+
+.navbar-form {
+    padding-bottom: 0;
+    margin-bottom: 10px;
+    margin-top: 10px;
+    margin-right: 20px;
+}
+
+
+.mg-line-legend text {
+    font-size: 2.0rem;
+    font-weight: 300;
+    stroke: none;
+}
+
+.mg-markers text {
+    font-size: 1.2rem;
+}
+
+.mg-y-axis text {
+    font-size: 1.2rem;
+}
+
+.mg-x-axis text {
+    font-size: 1.2rem;
+}
+
+.mg-y-axis .label {
+    font-size: 1.3rem;
+}
+
+h3 {
+    color: midnightblue;
+    padding-bottom: 10px;
+}
+
+/* bar chart */
+
+#barChart {
+    padding-top: 50px;
+    padding-left: 100px;
+}
+.bar1 {
+    stroke: blue;
+    fill: steelblue;
+    opacity: 0.6;
+}
+
+.bar2 {
+    stroke: red;
+    fill: red;
+    opacity: 0.6;
+}
+
+.bar1:hover {
+    fill: brown;
+}
+
+.axis {
+    font: 10px sans-serif;
+}
+
+.axis path, .axis line {
+    fill: none;
+    stroke: #000;
+    shape-rendering: crispEdges;
+}
+
+.x.axis path {
+    display: none;
+}
+
+svg[active=false] {
+    opacity: .4;
+}
+
+rect[active=false] {
+    opacity: .1;
+}
+
+
+
+.datepickerdemoBasicUsage {
+  /** Demo styles for mdCalendar. */ }
+  .datepickerdemoBasicUsage md-content {
+    padding-bottom: 200px; }
+  .datepickerdemoBasicUsage .validation-messages {
+    font-size: 12px;
+    color: #dd2c00;
+    margin-left: 15px; }
+
+
